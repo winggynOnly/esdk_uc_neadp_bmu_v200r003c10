@@ -1,0 +1,147 @@
+<ul class="block">
+	<li>
+		<div id="createCtd_desc" class="description_div">
+			<!-- append description -->
+		</div>
+	</li>
+</ul>
+<ul>
+	<li>
+		<div id="createCtd_execution">
+			<!-- append execution code -->
+		</div>
+	</li>
+</ul>
+<ul>
+	<li>
+		<div id="createCtd_src" class="sourcecode_div">
+			<!-- append source code -->
+		</div>
+	</li>
+</ul>
+
+<script type="text/javascript">
+	$(document).ready(function(){
+		$.ajax({
+			type : "get",
+			cache : false,
+			url : "/eSDK_UC2.2_Demo_BS_Java/pages/description/createctd_desc.html",
+			async : false,
+			success : function(data) {
+				$("#createCtd_desc").html(data);
+			}
+		});
+		
+		$.ajax({
+			type : "get",
+			cache : false,
+			url : "/eSDK_UC2.2_Demo_BS_Java/pages/execution/createctd_execution.html",
+			async : false,
+			success : function(data) {
+				$("#createCtd_execution").html(data);
+			}
+		});
+		
+		$.ajax({
+			type : "get",
+			cache : false,
+			url : "/eSDK_UC2.2_Demo_BS_Java/pages/sourcecode/createctd_src.html",
+			async : false,
+			success : function(data) {
+				$("#createCtd_src").html(data);
+			}
+		});
+		
+		$("#createCTD").click(function(){
+			$("#accountErrTip").html("");
+			$("#callerErrTip").html("");
+			$("#calleeErrTip").html("");
+			$("#createCTD_status").html("");
+			$("#accountErrTip").removeAttr("languageTag");
+			$("#callerErrTip").removeAttr("languageTag");
+			$("#calleeErrTip").removeAttr("languageTag");
+			$("#createCTD_status").removeAttr("languageTag");
+			$("#account").removeClass("input_error");
+			$("#caller").removeClass("input_error");
+			$("#callee").removeClass("input_error");
+			
+			var account = $("#account").val();
+			var caller = $("#caller").val();
+			var callee = $("#callee").val();
+			
+			if (isEmpty(account))
+			{
+				$("#accountErrTip").attr("languageTag", "accountNull");
+				$("#accountErrTip").html(controller.language.titles["accountNull"]);
+				$("#account").focus();
+				$("#account").addClass("input_error");
+				return false;
+			}
+			
+			if (isEmpty(caller))
+			{
+				$("#callerErrTip").attr("languageTag", "callerNull");
+				$("#callerErrTip").html(controller.language.titles["callerNull"]);
+				$("#caller").focus();
+				$("#caller").addClass("input_error");
+				return false;
+			}
+			
+			if (isEmpty(callee))
+			{
+				$("#calleeErrTip").attr("languageTag", "calleeNull");
+				$("#calleeErrTip").html(controller.language.titles["calleeNull"]);
+				$("#callee").focus();
+				$("#callee").addClass("input_error");
+				return false;
+			}
+			
+			$.ajax({
+				url : "/eSDK_UC2.2_Demo_BS_Java/ctdServlet",
+				type : "post",
+				dataType : "json",
+				data : "account=" + account + "&caller=" + caller + "&callee=" + callee,
+				async : false,
+				success : function(data)
+				{					
+					// 登录登出异常
+					if (data.resultCode == 401)
+					{
+						$("#createCTD_resultCode").val(data.resultCode);
+						$("#createCTD_status").attr("languageTag", "userAuthFailed");
+						$("#createCTD_status").html(controller.language.titles["userAuthFailed"]);
+					}
+					else
+					{
+						$("#createCTD_resultCode").val(data.resultCode);
+						$("#createCTD_resultContext").val(data.resultContext);
+						if (0 == data.resultCode)
+						{
+							$("#createCTD_status").attr("languageTag", "operationSuccess");
+							$("#createCTD_status").html(controller.language.titles["operationSuccess"]);
+						}
+						else
+						{
+							$("#createCTD_status").attr("languageTag", "operationFailed");
+							$("#createCTD_status").html(controller.language.titles["operationFailed"]);
+						}
+					}
+					
+				},
+				error : function(data)
+				{
+					var res = data.responseText;
+					$("#createCTD_resultCode").val(res);
+					$("#createCTD_resultContext").val("");
+					$("#createCTD_status").attr("languageTag", "operationFailed");
+					$("#createCTD_status").html(controller.language.titles["operationFailed"]);
+				},
+				beforeSend : function()
+				{
+					$("#createCTD_resultCode").val("");
+					$("#createCTD_resultContext").val("");
+				}
+			});
+		});
+	});
+</script>

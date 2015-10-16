@@ -1,0 +1,262 @@
+<ul class="block">
+	<li>
+		<div id="addAccount_desc" class="description_div">
+			<!-- append description -->
+		</div>
+	</li>
+</ul>
+<ul>
+	<li>
+		<div id="addAccount_execution">
+			<!-- append execution code -->
+		</div>
+	</li>
+</ul>
+<ul>
+	<li>
+		<div id="addAccount_src" class="sourcecode_div">
+			<!-- append source code -->
+		</div>
+	</li>
+</ul>
+
+<script type="text/javascript">
+	$(document).ready(function(){
+		$.ajax({
+			type : "get",
+			cache : false,
+			url : "/eSDK_UC2.2_Demo_BS_Java/pages/description/addAccount_desc.html",
+			async : false,
+			success : function(data) {
+				$("#addAccount_desc").html(data);
+			}
+		});
+		
+		$.ajax({
+			type : "get",
+			cache : false,
+			url : "/eSDK_UC2.2_Demo_BS_Java/pages/execution/addAccount_execution.html",
+			async : false,
+			success : function(data) {
+				$("#addAccount_execution").html(data);
+			}
+		});
+		
+		$.ajax({
+			type : "get",
+			cache : false,
+			url : "/eSDK_UC2.2_Demo_BS_Java/pages/sourcecode/addAccount_src.html",
+			async : false,
+			success : function(data) {
+				$("#addAccount_src").html(data);
+			}
+		});
+		
+		$("#addAccount").click(function(){
+			$("#userIdErrTip").html("");
+			$("#accountTypeErrTip").html("");
+			$("#loginNameErrTip").html("");
+			$("#passwordErrTip").html("");
+			$("#nameErrTip").html("");
+			$("#sexErrTip").html("");
+			$("#homePhoneErrTip").html("");
+			$("#cellPhoneErrTip").html("");
+			$("#officePhoneErrTip").html("");
+			$("#shortPhoneErrTip").html("");
+			$("#otherPhoneErrTip").html("");
+			$("#faxErrTip").html("");
+			$("#emailErrTip").html("");
+			$("#addrErrTip").html("");
+			$("#titleErrTip").html("");
+			$("#departmentIdErrTip").html("");
+			$("#userLevelErrTip").html("");
+			$("#roleIdErrTip").html("");
+
+			$("#addAccount_status").html("");
+			
+			$("#userIdErrTip").removeAttr("languageTag");
+			$("#accountTypeErrTip").removeAttr("languageTag");
+			$("#loginNameErrTip").removeAttr("languageTag");
+			$("#passwordErrTip").removeAttr("languageTag");
+			$("#nameErrTip").removeAttr("languageTag");
+			$("#sexErrTip").removeAttr("languageTag");
+			$("#homePhoneErrTip").removeAttr("languageTag");
+			$("#cellPhoneErrTip").removeAttr("languageTag");
+			$("#officePhoneErrTip").removeAttr("languageTag");
+			$("#shortPhoneErrTip").removeAttr("languageTag");
+			$("#otherPhoneErrTip").removeAttr("languageTag");
+			$("#faxErrTip").removeAttr("languageTag");
+			$("#emailErrTip").removeAttr("languageTag");
+			$("#addrErrTip").removeAttr("languageTag");
+			$("#titleErrTip").removeAttr("languageTag");
+			$("#departmentIdErrTip").removeAttr("languageTag");
+			$("#userLevelErrTip").removeAttr("languageTag");
+			$("#roleIdErrTip").removeAttr("languageTag");
+			
+			$("#addAccount_status").removeAttr("languageTag");
+			
+			$("#userIdErrTip").removeClass("input_error");
+			$("#accountTypeErrTip").removeClass("input_error");
+			$("#loginNameErrTip").removeClass("input_error");
+			$("#passwordErrTip").removeClass("input_error");
+			$("#nameErrTip").removeClass("input_error");
+			$("#sexErrTip").removeClass("input_error");
+			$("#homePhoneErrTip").removeClass("input_error");
+			$("#cellPhoneErrTip").removeClass("input_error");
+			$("#officePhoneErrTip").removeClass("input_error");
+			$("#shortPhoneErrTip").removeClass("input_error");
+			$("#otherPhoneErrTip").removeClass("input_error");
+			$("#faxErrTip").removeClass("input_error");
+			$("#emailErrTip").removeClass("input_error");
+			$("#addrErrTip").removeClass("input_error");
+			$("#titleErrTip").removeClass("input_error");
+			$("#departmentIdErrTip").removeClass("input_error");
+			$("#userLevelErrTip").removeClass("input_error");
+			$("#roleIdErrTip").removeClass("input_error");
+			
+			var userId = $("#userId").val();
+			var accountType = $("#accountType").val();
+			var loginName = $("#loginName").val();
+			var password = $("#password").val();
+			var name = $("#name").val();
+			var sex = $("#sex").val();
+			var homePhone = $("#homePhone").val();
+			var cellPhone = $("#cellPhone").val();
+			var officePhone = $("#officePhone").val();
+			var shortPhone = $("#shortPhone").val();
+			var otherPhone = $("#otherPhone").val();
+			var fax = $("#fax").val();
+			var email = $("#email").val();
+			var addr = $("#addr").val();
+			var title = $("#title").val();
+			var departmentId = $("#departmentId").val();
+			var userLevel = $("#userLevel").val();
+			var roleId = $("#roleId").val();
+			
+			if (isEmpty(userId))
+			{
+				$("#userIdErrTip").attr("languageTag", "userIdNull");
+				$("#userIdErrTip").html(controller.language.titles["userId1Null"]);
+				$("#userId").focus();
+				$("#userId").addClass("input_error");
+				return false;
+			}
+			
+			if (isEmpty(accountType))
+			{
+				$("#accountTypeErrTip").attr("languageTag", "accountTypeNull");
+				$("#accountTypeErrTip").html(controller.language.titles["accountTypeNull"]);
+				$("#accountType").focus();
+				$("#accountType").addClass("input_error");
+				return false;
+			}
+			
+			if (isEmpty(loginName))
+			{
+				$("#loginNameErrTip").attr("languageTag", "loginNameNull");
+				$("#loginNameErrTip").html(controller.language.titles["loginNameNull"]);
+				$("#loginName").focus();
+				$("#loginName").addClass("input_error");
+				return false;
+			}
+			
+			if (isEmpty(password))
+			{
+				$("#passwordErrTip").attr("languageTag", "passwordNull");
+				$("#passwordErrTip").html(controller.language.titles["passwordNull"]);
+				$("#password").focus();
+				$("#password").addClass("input_error");
+				return false;
+			}
+			
+			if (isEmpty(name))
+			{
+				$("#nameErrTip").attr("languageTag", "nameNull");
+				$("#nameErrTip").html(controller.language.titles["nameNull"]);
+				$("#name").focus();
+				$("#name").addClass("input_error");
+				return false;
+			}
+			
+			if (isEmpty(departmentId))
+			{
+				$("#departmentIdErrTip").attr("languageTag", "departmentIdNull");
+				$("#departmentIdErrTip").html(controller.language.titles["departmentIdNull"]);
+				$("#departmentId").focus();
+				$("#departmentId").addClass("input_error");
+				return false;
+			}
+			
+			if (isEmpty(userLevel))
+			{
+				$("#userLevelErrTip").attr("languageTag", "userLevelNull");
+				$("#userLevelErrTip").html(controller.language.titles["userLevelNull"]);
+				$("#userLevel").focus();
+				$("#userLevel").addClass("input_error");
+				return false;
+			}
+			
+			if (isEmpty(roleId))
+			{
+				$("#roleIdErrTip").attr("languageTag", "roleIdNull");
+				$("#roleIdErrTip").html(controller.language.titles["roleIdNull"]);
+				$("#roleId").focus();
+				$("#roleId").addClass("input_error");
+				return false;
+			}
+			
+			$.ajax({
+				url : "/eSDK_UC2.2_Demo_BS_Java/addAccountServlet",
+				type : "post",
+				dataType : "json",
+				data : "userId=" + userId + "&accountType=" + accountType + "&loginName=" + loginName
+						+ "&password=" + password + "&name=" + name + "&sex=" + sex + "&homePhone=" + homePhone + 
+						"&cellPhone=" + cellPhone + "&officePhone=" + officePhone + "&shortPhone=" + shortPhone +
+						"&otherPhone=" + otherPhone + "&fax=" + fax + "&email=" + email + "&addr=" + addr + 
+						"&title=" + title + "&departmentId=" + departmentId + "&userLevel=" + userLevel + 
+						"&roleId=" + roleId,
+				async : false,
+				success : function(data)
+				{
+					// 登录登出异常
+					if (data.resultCode == 401)
+					{
+						$("#addAccount_resultCode").val(data.resultCode);
+						$("#addAccount_status").attr("languageTag", "userAuthFailed");
+						$("#addAccount_status").html(controller.language.titles["userAuthFailed"]);
+					}
+					else
+					{
+						$("#addAccount_resultCode").val(data.resultCode);
+						$("#addAccount_resultContext").val(data.resultContext);
+						$("#addAccount_result").val(data.result);
+						if (0 == data.resultCode)
+						{
+							$("#addAccount_status").attr("languageTag", "operationSuccess");
+							$("#addAccount_status").html(controller.language.titles["operationSuccess"]);
+						}
+						else
+						{
+							$("#addAccount_status").attr("languageTag", "operationFailed");
+							$("#addAccount_status").html(controller.language.titles["operationFailed"]);
+						}
+					}
+					
+				},
+				error : function(data)
+				{
+					var res = data.responseText;
+					$("#addAccount_resultCode").val(res);
+					$("#addAccount_resultContext").val("");
+					$("#addAccount_status").attr("languageTag", "operationFailed");
+					$("#addAccount_status").html(controller.language.titles["operationFailed"]);
+				},
+				beforeSend : function()
+				{
+					$("#addAccount_resultCode").val("");
+					$("#addAccount_resultContext").val("");
+				}
+			});
+		});
+	});
+</script>

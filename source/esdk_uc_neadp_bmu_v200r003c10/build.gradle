@@ -1,0 +1,14 @@
+
+ext.zipFileName = 'esdksvr_uc_neadp_bmu_v200r003c10'
+
+// config for obfuscate
+
+addDependentProject(project, "compile", "esdk_platform_common")
+addDependentProject(project, "compile", "esdk_platform_interface")
+addDependentProject(project, "compile", "esdk_uc_base")
+addDependentProject(project, "compile", "esdk_uc_domain")
+addDependentProject(project, "compile", "esdk_uc_neadp_interface")
+
+dependencies {
+	compile ':log4j:1.2.16'
+}

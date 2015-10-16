@@ -1,0 +1,97 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<title languageTag="om"></title>
+		<link rel="stylesheet" href="/eSDK_UC2.2_Demo_BS_Java/css/tree.css" type="text/css">
+		<link rel="stylesheet" href="/eSDK_UC2.2_Demo_BS_Java/css/zTreeStyle.css" type="text/css">
+		<link rel="stylesheet" href="/eSDK_UC2.2_Demo_BS_Java/css/demo.css" type="text/css" />
+		<script type="text/javascript" src="/eSDK_UC2.2_Demo_BS_Java/js/jquery-1.8.3.js"></script>
+		<script type="text/javascript" src="/eSDK_UC2.2_Demo_BS_Java/js/jquery.ztree.core-3.5.js"></script>
+		<script src="/eSDK_UC2.2_Demo_BS_Java/js/en-us.js" type="text/javascript"></script>
+		<script src="/eSDK_UC2.2_Demo_BS_Java/js/zh-cn.js" type="text/javascript"></script>
+		<script src="/eSDK_UC2.2_Demo_BS_Java/js/demo.js" type="text/javascript"></script>
+		<script type="text/javascript">
+			var controller;
+			var lang;
+		
+			var setting = {
+					view: {
+						showLine: true,
+						expandSpeed: "fast"
+					},
+					data: {
+						simpleData: {
+							enable: true
+						}
+					}
+				};
+			
+			var zNodes =[
+			 			{ id:1, pId:0, name:"1", languageTag:"typicalApplication", open:true, click:"clean();"},
+			 			
+			 			{ id:11, pId:1, name:"2", languageTag:"CTD", open:true, click:"clean();"},
+			 			{ id:111, pId:11, name:"3", languageTag:"createCTD", click:"appendInterface('createCTD');"},
+			 			
+			 			{ id:12, pId:1, name:"4", languageTag:"addressBook", open:true, click:"clean();"},			 			
+			 			{ id:121, pId:12, name:"5", languageTag:"addAccount", click:"appendInterface('addAccount');"},			 			
+			 			{ id:122, pId:12, name:"5", languageTag:"queryAccount", click:"appendInterface('queryAccount');"},			 						 		
+			 		];		
+			
+			$(document).ready(function(){
+				$.fn.zTree.init($("#eSDKTree"), setting, zNodes);
+			});
+						
+		</script>
+	</head>
+	<body onload="changeLang();" class="body">
+		<div id="container" class="container">
+			<div class="header">
+				<div class="logo"><img src="/eSDK_UC2.2_Demo_BS_Java/pic/logo64.png" width="61px;" height="61px;"></div>
+				<div style="width: 80%;">
+					<h1 languageTag="om"></h1>
+					<label languageTag="descriptionUC" style="color: rgb(85, 85, 85);"></label>
+				</div>
+				<div style="height:20px; float: right;margin-top:7px;">
+					<select class="changeLang" id="changeLang" onchange="changeLang();">
+						<option id="zh-cn" value="zh-cn">中文</option>
+						<option id="en-us" value="en-us">English</option>
+					</select>
+				</div>
+			</div>
+			
+			<div class="portal">
+				<div class="menu">
+					<div class="zTreeDemoBackground left">
+						<p id="eSDKTree" class="ztree"></p>
+						
+					</div>
+				</div>
+				
+				<div class="content">
+					<div id="tabs" class="tabs">  
+					 	<div id="menu1box" class="menu1box">  
+					  		<ul id="menu1" class="menu1">
+					   			<li languageTag="description" class="hover" onclick="setTab(1,0)"></li>  
+							   	<li languageTag="execution" onclick="setTab(1,1)"></li>  
+							   	<li languageTag="sourceCode" onclick="setTab(1,2)"></li>  
+					  		</ul>  
+					 	</div>  
+					 	<div id="main1box" class="main1box">  
+					  		<div id="main1" class="main1">  
+					   			<ul class="block"><li></li></ul>  
+								<ul><li></li></ul>  
+								<ul><li></li></ul>  
+					  		</div>  
+					 	</div>  
+					</div>
+				</div>
+			</div>
+			
+			<div class="footer">
+				<label languageTag="copyright" style="font-size: 12px;"></label>
+			</div>
+		</div>
+	</body>
+</html>

@@ -1,0 +1,239 @@
+<div>
+	<label style="font-weight: bold;">AddAccountServlet.class:</label>
+	<br><br>
+	<label style="font-weight: bold;"><img src="/eSDK_UC2.2_Demo_BS_Java/pic/description.jpg"></label>
+	<br><br>
+	<label style="font-weight: bold;" languageTag="sourceCodeDesc"></label>
+	<br><br>
+	<span style='color:#7F0055;font-weight:bold;'>package</span><span style='color:black;'> com.huawei.esdk.uc.demo.servlet;</span>
+	<br><br>
+    <span style='color:#7F0055;font-weight:bold;'>import</span><span style='color:black;'> java.io.IOException;</span>
+	<br>
+	<span style='color:#7F0055;font-weight:bold;'>import</span><span style='color:black;'> java.io.PrintWriter;</span>
+	<br>
+	<br>
+	<span style='color:#7F0055;font-weight:bold;'>import</span><span style='color:black;'> javax.servlet.ServletException;</span>
+	<br>
+	<span style='color:#7F0055;font-weight:bold;'>import</span><span style='color:black;'> javax.servlet.http.HttpServlet;</span>
+	<br>
+	<span style='color:#7F0055;font-weight:bold;'>import</span><span style='color:black;'> javax.servlet.http.HttpServletRequest;</span>
+	<br>
+	<span style='color:#7F0055;font-weight:bold;'>import</span><span style='color:black;'> javax.servlet.http.HttpServletResponse;</span>
+	<br>
+	<br>
+	<span style='color:#7F0055;font-weight:bold;'>import</span><span style='color:black;'> org.apache.log4j.Logger;</span>
+	<br>
+	<br>
+	<span style='color:#7F0055;font-weight:bold;'>import</span><span style='color:black;'> com.google.gson.Gson;</span>
+	<br>
+	<span style='color:#7F0055;font-weight:bold;'>import</span><span style='color:black;'> com.huawei.esdk.uc.demo.constant.UCConstant;</span>
+	<br>
+	<br>
+	<span style='color:#7F0055;font-weight:bold;'>import</span><span style='color:black;'> com.huawei.esdk.uc.demo.model.Account;</span>
+	<br>
+	<span style='color:#7F0055;font-weight:bold;'>import</span><span style='color:black;'> com.huawei.esdk.uc.demo.model.AccountBean;</span>
+	<br>
+	<span style='color:#7F0055;font-weight:bold;'>import</span><span style='color:black;'> com.huawei.esdk.uc.demo.model.RestResponse;</span>
+	<br>
+	<span style='color:#7F0055;font-weight:bold;'>import</span><span style='color:black;'> com.huawei.esdk.uc.demo.model.RestResponseKey;</span>
+	<br>	
+	<span style='color:#7F0055;font-weight:bold;'>import</span><span style='color:black;'> com.huawei.esdk.uc.demo.model.commu.RestRequestMessage;</span>
+	<br>
+	<span style='color:#7F0055;font-weight:bold;'>import</span><span style='color:black;'> com.huawei.esdk.uc.demo.util.Base64Utils;</span>
+	<br>	
+	<span style='color:#7F0055;font-weight:bold;'>import</span><span style='color:black;'> com.huawei.esdk.uc.demo.util.PropertiesUtils;</span>
+	<br>
+	<span style='color:#7F0055;font-weight:bold;'>import</span><span style='color:black;'> com.huawei.esdk.uc.demo.util.RSA2048Utils;</span>
+	<br>	
+	<span style='color:#7F0055;font-weight:bold;'>import</span><span style='color:black;'> com.huawei.esdk.uc.demo.util.RestUtils;</span>
+	<br>
+	<span style='color:#7F0055;font-weight:bold;'>import</span><span style='color:black;'> com.huawei.esdk.uc.demo.util.StringUtils;</span>
+	<br><br>
+	<span style='color:#3F5FBF;'>
+		/**<br>
+		 * 帐号管理处理类<br> 
+		 * 用于添加账号<br> 
+	 	 * <br> 
+	 	 * @author　xxxxxx<br> 
+	 	 * @see　[无]<br> 
+	 	 * @since　[eSDK UC V100R003C30]<br> 
+	 	 */</span><br> 
+	<span style='color:#7F0055;font-weight:bold;'>public class</span> AddAccount <span style='color:#7F0055;font-weight:bold;'>extends</span> HttpServlet<br> 
+	{<br> 
+	　　<span style='color:#3F5FBF;'>
+		/**<br> 
+	　　  * 序列号<br> 
+	　　  */</span><br> 
+	　　<span style='color:#7F0055;font-weight:bold;'>private static final long</span> <span style="color:#0000C0;font-style:italic;">serialVersionUID</span> = 5053679104100767687L;<br> 
+	　　<br> 
+	　　<span style='color:#3F5FBF;'>
+		/**<br> 
+	　　 * log日志对象<br> 
+	　　 */</span><br> 
+	　　<span style='color:#7F0055;font-weight:bold;'>private static final</span> Logger <span style="color:#0000C0;font-style:italic;">LOGGER</span> = Logger.getLogger(AddAccountServlet.<span style='color:#7F0055;font-weight:bold;'>class</span>);<br> 
+	　　<br> 
+	　　<span style='color:#3F5FBF;'>
+		/**<br> 
+	　　 * Gson，用于进行对象和json之间的转换<br> 
+	　　 */</span><br> 
+	　　<span style='color:#7F0055;font-weight:bold;'>private static final</span> Gson <span style="color:#0000C0;font-style:italic;">GSON</span> = <span style='color:#7F0055;font-weight:bold;'>new</span> Gson();<br> 
+	　　<br> 
+	　　<span style="color:#646464;">@Override</span><br> 
+	　　<span style='color:#7F0055;font-weight:bold;'>protected void</span> doPost (HttpServletRequest request, HttpServletResponse response)<br> 
+	　　　　<span style='color:#7F0055;font-weight:bold;'>throws</span> ServletException, IOException<br> 
+	　　{<br> 
+	　　　　addAccount (request,response);<br>	
+	　　}<br>	
+	　　<span style='color:#7F0055;font-weight:bold;'>protected void</span> addAccount (HttpServletRequest request, HttpServletResponse response)<br> 
+	　　　　<span style='color:#7F0055;font-weight:bold;'>throws</span> ServletException, IOException<br> 
+	　　{<br> 
+	　　　　<span style='color:#3F7F5F;'>// 获取页面入参</span><br> 
+	　　　　String userId = request.getParameter(<span style="color:#0000C0;">"userId"</span>);<br><br>
+	　　　　String accountType = request.getParameter(<span style="color:#0000C0;">"accountType"</span>);<br>
+	　　　　String loginName = request.getParameter(<span style="color:#0000C0;">"loginName"</span>);<br>
+	　　　　String password = request.getParameter(<span style="color:#0000C0;">"password"</span>);<br>
+	　　　　String name = request.getParameter(<span style="color:#0000C0;">"name"</span>);<br>
+	　　　　String sex = request.getParameter(<span style="color:#0000C0;">"sex"</span>);<br>
+	　　　　String homePhone = request.getParameter(<span style="color:#0000C0;">"homePhone"</span>);<br>
+	　　　　String cellPhone = request.getParameter(<span style="color:#0000C0;">"cellPhone"</span>);<br>
+	　　　　String officePhone = request.getParameter(<span style="color:#0000C0;">"officePhone"</span>);<br>
+	　　　　String shortPhone = request.getParameter(<span style="color:#0000C0;">"shortPhone"</span>);<br>
+	　　　　String otherPhone = request.getParameter(<span style="color:#0000C0;">"otherPhone"</span>);<br>
+	　　　　String fax = request.getParameter(<span style="color:#0000C0;">"fax"</span>);<br>	
+	　　　　String email = request.getParameter(<span style="color:#0000C0;">"email"</span>);<br>
+	　　　　String addr = request.getParameter(<span style="color:#0000C0;">"addr"</span>);<br>
+	　　　　String title = request.getParameter(<span style="color:#0000C0;">"title"</span>);<br>
+	　　　　String departmentId = request.getParameter(<span style="color:#0000C0;">"departmentId"</span>);<br>
+	　　　　String userLevel = request.getParameter(<span style="color:#0000C0;">"userLevel"</span>);<br>
+	　　　　String roleId = request.getParameter(<span style="color:#0000C0;">"roleId"</span>);<br>	
+	　　　　<br>
+	　　　　<span style='color:#3F7F5F;'>// 获取公钥</span><br>
+	　　　　String publicKey = getPublicKey();<br>	
+	　　　　<br>
+	　　　　<span style='color:#3F7F5F;'>// 将公钥设置到RSA2048Utils类里</span><br>
+	　　　　RSA2048Utils.setPublicKey(publicKey);<br>	
+	　　　　<br>	
+	　　　　String passwordCode = <span style='color:#7F0055;font-weight:bold;'>null</span>;<br>
+	　　　　<span style='color:#7F0055;font-weight:bold;'>try</span><br>
+	　　　　{<br> 
+	　　　　　　<span style='color:#3F7F5F;'>// 将密码用RSA2048加密，并使用BASE64编码</span><br>
+	　　　　　　passwordCode = Base64Utils.encode(RSA2048Utils.encode(password.getBytes()));<br>	
+	　　　　}<br>
+	　　　　<span style='color:#7F0055;font-weight:bold;'>catch</span> (Exception e)<br>
+	　　　　{<br> 
+	　　　　　　<span style="color:#0000C0;">"LOGGER"</span>.error("<span style="color:#0000C0;">password encrypt failed</span>" + e);<br>	
+	　　　　}<br>	
+	　　　　<span style='color:#3F7F5F;'>// 拼装请求bean</span><br>
+	　　　　Account account = <span style='color:#7F0055;font-weight:bold;'>new</span> Account();<br><br> 
+	　　　　account.setAccountType(accountType);<br> 
+	　　　　account.setLoginName(loginName);<br>  
+	　　　　account.setPassword(password);<br> 
+	　　　　account.setName(name);<br>  
+	　　　　account.setSex(sex);<br> 
+	　　　　account.setHomePhone(homePhone);<br>  
+	　　　　account.setCellPhone(cellPhone);<br> 
+	　　　　account.setOfficePhone(officePhone);<br>  
+	　　　　account.setShortPhone(shortPhone);<br> 
+	　　　　account.setOtherPhone(otherPhone);<br>  
+	　　　　account.setFax(fax);<br> 
+	　　　　account.setEmail(email);<br>  
+	　　　　account.setAddr(addr);<br> 
+	　　　　account.setTitle(title);<br>  
+	　　　　account.setDepartmentId(departmentId);<br>
+	　　　　account.setUserLevel(userLevel);<br>  
+	　　　　account.setRoleId(roleId);<br><br>
+	　　　　AccountBean accountBean = <span style='color:#7F0055;font-weight:bold;'>new</span> AccountBean();<br><br> 
+	　　　　accountBean.setUserId(userId);<br> 
+	　　　　accountBean.setAccount(account);<br><br>
+	　　　　RestResponse result = <span style='color:#7F0055;font-weight:bold;'>new</span> RestResponse();<br> 
+	　　　　RestRequestMessage restRequestMessage = <span style='color:#7F0055;font-weight:bold;'>new</span> RestRequestMessage();<br><br>
+	　　　　<span style='color:#3F7F5F;'>// 设置请求类型为POST</span><br>
+	　　　　restRequestMessage.setHttpMethod(UCConstant<span style="color:#0000C0;font-style:italic;">.HTTP_METHOD_POST</span>);<br> 
+	　　　　restRequestMessage.setPayload(accountBean);<br><br>
+	
+	
+	　　　　<span style='color:#7F0055;font-weight:bold;'>try</span><br> 
+	　　　　{<br> 
+	　　　　　　<span style='color:#3F7F5F;'>// 发送rest消息，调用添加帐号接口</span><br> 
+	　　　　　　String responsePayload =<br>
+	　　　　　　　　RestUtils.getInstance().sendMessage(restRequestMessage, PropertiesUtils.getValue(<span style="color:#0000C0;">"account.path"</span>));<br><br>
+	　　　　　　<span style='color:#7F0055;font-weight:bold;'>if</span> (!StringUtils.isEmpty(responsePayload))<br>
+	　　　　　　{<br>
+	　　　　　　　　<span style='color:#3F7F5F;'>// 返回401为鉴权失败，检查rest_config.properties中的用户密码是否配置正确</span><br> 
+	　　　　　　　　<span style='color:#7F0055;font-weight:bold;'>if</span> (<span style="color:#0000C0;">"401"</span>.equals(responsePayload))<br>
+	　　　　　　　　{<br>
+	　　　　　　　　　　result.setResultCode(401L);<br> 
+	　　　　　　　　}<br>
+	　　　　　　　　<span style='color:#7F0055;font-weight:bold;'>else</span><br> 
+	　　　　　　　　{<br>
+	　　　　　　　　　　<span style='color:#3F7F5F;'>// 把JSON结果转换成JavaBean</span><br> 
+	　　　　　　　　　　result = <span style="color:#0000C0;font-style:italic;">GSON</span>.fromJson(responsePayload, RestResponse.<span style='color:#7F0055;font-weight:bold;'>class</span>);<br> 
+	　　　　　　　　}<br>
+	　　　　　　}<br>
+	　　　　　　<span style='color:#7F0055;font-weight:bold;'>else</span><br>
+	　　　　　　{<br> 
+	　　　　　　　　<span style='color:#3F7F5F;'>// 消息为空,可能是网络存在问题，需要定义个错误码，1默认为操作失败</span><br> 
+	　　　　　　　　result.setResultCode(1L);<br> 
+	　　　　　　}<br>
+	　　　　}<br>
+	　　　　<span style='color:#7F0055;font-weight:bold;'>catch</span> (IOException e)<br> 
+	　　　　{<br> 
+	　　　　　　<span style="color:#0000C0;font-style:italic;">LOGGER</span>.error(<span style="color:#0000C0;">"add account error"</span> + e);<br>
+	　　　　}<br>
+	　　　　<span style='color:#7F0055;font-weight:bold;'>catch</span> (Exception e)<br>  
+	　　　　{<br> 
+	　　　　　　<span style="color:#0000C0;font-style:italic;">LOGGER</span>.error(<span style="color:#0000C0;">"add account error"</span> + e);<br>
+	　　　　}<br>
+	　　　　<br> 
+	　　　　<span style='color:#3F7F5F;'>// 输出流</span><br> 
+	　　　　PrintWriter pw = response.getWriter();<br> 
+	　　　　pw.print(<span style="color:#0000C0;font-style:italic;">GSON</span>.toJson(result));<br> 
+	　　　　pw.close();<br> 
+	　　}<br><br>
+	　　<span style='color:#7F0055;font-weight:bold;'>protected String</span> getPublicKey ()<br> 
+	　　{<br> 
+	　　　　RestResponseKey result = new RestResponseKey();<br>
+	　　　　RestRequestMessage restRequestMessage = new RestRequestMessage();<br>
+	　　　　<span style='color:#3F7F5F;'>// 设置请求类型为GET</span><br>
+	　　　　restRequestMessage.setHttpMethod(UCConstant<span style="color:#0000C0;font-style:italic;">.HTTP_METHOD_GET</span>);<br> 
+	　　　　<br>
+	　　　　String responsePayload = null;<br>
+	　　　　<span style='color:#7F0055;font-weight:bold;'>try</span><br> 
+	　　　　{<br> 
+	　　　　　　<span style='color:#3F7F5F;'>// 发送rest消息，调用添加帐号接口</span><br> 
+	　　　　　　String responsePayload =<br>
+	　　　　　　　　RestUtils.getInstance().sendMessage(restRequestMessage, PropertiesUtils.getValue(<span style="color:#0000C0;">"publicKey.path"</span>));<br><br>
+	　　　　　　<span style='color:#7F0055;font-weight:bold;'>if</span> (!StringUtils.isEmpty(responsePayload))<br>
+	　　　　　　{<br>
+	　　　　　　　　<span style='color:#3F7F5F;'>// 返回401为鉴权失败，检查rest_config.properties中的用户密码是否配置正确</span><br> 
+	　　　　　　　　<span style='color:#7F0055;font-weight:bold;'>if</span> (<span style="color:#0000C0;">"401"</span>.equals(responsePayload))<br>
+	　　　　　　　　{<br>
+	　　　　　　　　　　result.setResultCode(401L);<br> 
+	　　　　　　　　}<br>
+	　　　　　　　　<span style='color:#7F0055;font-weight:bold;'>else</span><br> 
+	　　　　　　　　{<br>
+	　　　　　　　　　　<span style='color:#3F7F5F;'>// 把JSON结果转换成JavaBean</span><br> 
+	　　　　　　　　　　result = <span style="color:#0000C0;font-style:italic;">GSON</span>.fromJson(responsePayload, RestResponse.<span style='color:#7F0055;font-weight:bold;'>class</span>);<br> 
+	　　　　　　　　}<br>
+	　　　　　　}<br>
+	　　　　　　<span style='color:#7F0055;font-weight:bold;'>else</span><br>
+	　　　　　　{<br> 
+	　　　　　　　　<span style='color:#3F7F5F;'>// 消息为空,可能是网络存在问题，需要定义个错误码，1默认为操作失败</span><br> 
+	　　　　　　　　result.setResultCode(1L);<br> 
+	　　　　　　}<br>
+	　　　　}<br>
+	　　　　<span style='color:#7F0055;font-weight:bold;'>catch</span> (IOException e)<br> 
+	　　　　{<br> 
+	　　　　　　<span style="color:#0000C0;font-style:italic;">LOGGER</span>.error(<span style="color:#0000C0;">"get publicKey error"</span> + e);<br>
+	　　　　}<br>
+	　　　　<span style='color:#7F0055;font-weight:bold;'>catch</span> (Exception e)<br>  
+	　　　　{<br> 
+	　　　　　　<span style="color:#0000C0;font-style:italic;">LOGGER</span>.error(<span style="color:#0000C0;">"get publicKey error"</span> + e);<br>
+	　　　　}<br>
+	　　　　<br> 
+	　　　　String publicKey = result.getPublicKey();<br>
+	　　　　<span style='color:#7F0055;font-weight:bold;'>return</span> publicKey;<br>
+    }
+	　　}<br>
+	}
+</div>

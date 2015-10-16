@@ -1,0 +1,139 @@
+<div>
+	<label style="font-weight: bold;">QueryAccountServlet.class:</label>
+	<br><br>
+	<label style="font-weight: bold;"><img src="/eSDK_UC2.2_Demo_BS_Java/pic/description.jpg"></label>
+	<br><br>
+	<label style="font-weight: bold;" languageTag="sourceCodeDesc"></label>
+	<br><br>
+	<span style='color:#7F0055;font-weight:bold;'>package</span><span style='color:black;'> com.huawei.esdk.uc.demo.servlet;</span>
+	<br><br>
+    <span style='color:#7F0055;font-weight:bold;'>import</span><span style='color:black;'> java.io.IOException;</span>
+	<br>
+	<span style='color:#7F0055;font-weight:bold;'>import</span><span style='color:black;'> java.io.PrintWriter;</span>
+	<br>
+	<span style='color:#7F0055;font-weight:bold;'>import</span><span style='color:black;'> java.util.HashMap;</span>
+	<br>
+	<span style='color:#7F0055;font-weight:bold;'>import</span><span style='color:black;'> java.util.Map;</span>
+	<br>
+	<br>
+	<span style='color:#7F0055;font-weight:bold;'>import</span><span style='color:black;'> javax.servlet.ServletException;</span>
+	<br>
+	<span style='color:#7F0055;font-weight:bold;'>import</span><span style='color:black;'> javax.servlet.http.HttpServlet;</span>
+	<br>
+	<span style='color:#7F0055;font-weight:bold;'>import</span><span style='color:black;'> javax.servlet.http.HttpServletRequest;</span>
+	<br>
+	<span style='color:#7F0055;font-weight:bold;'>import</span><span style='color:black;'> javax.servlet.http.HttpServletResponse;</span>
+	<br>
+	<br>
+	<span style='color:#7F0055;font-weight:bold;'>import</span><span style='color:black;'> org.apache.log4j.Logger;</span>
+	<br>
+	<br>
+	<span style='color:#7F0055;font-weight:bold;'>import</span><span style='color:black;'> com.google.gson.Gson;</span>
+	<br>
+	<span style='color:#7F0055;font-weight:bold;'>import</span><span style='color:black;'> com.huawei.esdk.uc.demo.constant.UCConstant;</span>
+	<br>
+	<br>
+	<span style='color:#7F0055;font-weight:bold;'>import</span><span style='color:black;'> com.huawei.esdk.uc.demo.model.RestResponse;</span>
+	<br>
+	<span style='color:#7F0055;font-weight:bold;'>import</span><span style='color:black;'> com.huawei.esdk.uc.demo.model.commu.RestRequestMessage;</span>
+	<br>
+	<span style='color:#7F0055;font-weight:bold;'>import</span><span style='color:black;'> com.huawei.esdk.uc.demo.util.PropertiesUtils;</span>
+	<br>
+	<span style='color:#7F0055;font-weight:bold;'>import</span><span style='color:black;'> com.huawei.esdk.uc.demo.util.RestUtils;</span>
+	<br>
+	<span style='color:#7F0055;font-weight:bold;'>import</span><span style='color:black;'> com.huawei.esdk.uc.demo.util.StringUtils;</span>
+	<br><br>
+	<span style='color:#3F5FBF;'>
+		/**<br>
+		 * 账号管理处理类<br> 
+		 * 用于查询账号<br> 
+	 	 * <br> 
+	 	 * @author　xxxxxx<br> 
+	 	 * @see　[无]<br> 
+	 	 * @since　[eSDK UC V100R003C30]<br> 
+	 	 */</span><br> 
+	<span style='color:#7F0055;font-weight:bold;'>public class</span> QueryAccountServlet <span style='color:#7F0055;font-weight:bold;'>extends</span> HttpServlet<br> 
+	{<br> 
+	　　<span style='color:#3F5FBF;'>
+		/**<br> 
+	　　  * 序列号<br> 
+	　　  */</span><br> 
+	　　<span style='color:#7F0055;font-weight:bold;'>private static final long</span> <span style="color:#0000C0;font-style:italic;">serialVersionUID</span> = 5053679104100767688L;<br> 
+	　　<br> 
+	　　<span style='color:#3F5FBF;'>
+		/**<br> 
+	　　 * log日志对象<br> 
+	　　 */</span><br> 
+	　　<span style='color:#7F0055;font-weight:bold;'>private static final</span> Logger <span style="color:#0000C0;font-style:italic;">LOGGER</span> = Logger.getLogger(QueryAccountServlet.<span style='color:#7F0055;font-weight:bold;'>class</span>);<br> 
+	　　<br> 
+	　　<span style='color:#3F5FBF;'>
+		/**<br> 
+	　　 * Gson，用于进行对象和json之间的转换<br> 
+	　　 */</span><br> 
+	　　<span style='color:#7F0055;font-weight:bold;'>private static final</span> Gson <span style="color:#0000C0;font-style:italic;">GSON</span> = <span style='color:#7F0055;font-weight:bold;'>new</span> Gson();<br> 
+	　　<br> 
+	　　<span style="color:#646464;">@Override</span><br> 
+	　　<span style='color:#7F0055;font-weight:bold;'>protected void</span> doGet(HttpServletRequest request, HttpServletResponse response)<br> 
+	　　　　<span style='color:#7F0055;font-weight:bold;'>throws</span> ServletException, IOException<br> 
+	　　{<br> 
+	　　　　<span style='color:#3F7F5F;'>// 获取页面入参</span><br> 
+	　　　　String userId = request.getParameter(<span style="color:#0000C0;">"userId"</span>);<br>  
+	　　　　String exactSearch = request.getParameter(<span style="color:#0000C0;">"exactSearch"</span>);<br>
+	　　　　String condition = request.getParameter(<span style="color:#0000C0;">"condition"</span>);<br>
+	　　　　String pageCount = request.getParameter(<span style="color:#0000C0;">"pageCount"</span>);<br>
+	　　　　String pageNum = request.getParameter(<span style="color:#0000C0;">"pageNum"</span>);<br>
+	　　　　<br> 
+	　　　　<span style='color:#3F7F5F;'>// 拼装请求bean</span><br>
+	　　　　Map&lt;String, String&gt; parameters = <span style='color:#7F0055;font-weight:bold;'>new</span> HashMap&lt;String, String&gt;();<br>
+	　　　　parameters.put("userId", userId);<br>
+	　　　　parameters.put("exactSearch", exactSearch);<br>
+	　　　　parameters.put("condition", condition);<br>
+	　　　　parameters.put("pageCount", pageCount);<br>
+	　　　　parameters.put("pageNum", pageNum);<br><br>  
+	　　　　RestResponse result = <span style='color:#7F0055;font-weight:bold;'>new</span> RestResponse();<br> 
+	　　　　RestRequestMessage restRequestMessage = <span style='color:#7F0055;font-weight:bold;'>new</span> RestRequestMessage();<br><br>
+	　　　　<span style='color:#3F7F5F;'>// 设置请求类型为GET</span><br>
+	　　　　restRequestMessage.setHttpMethod(UCConstant<span style="color:#0000C0;font-style:italic;">.HTTP_METHOD_GET</span>);<br> 
+	　　　　restRequestMessage.setParameters(parameters);<br><br>
+	
+	
+	　　　　<span style='color:#7F0055;font-weight:bold;'>try</span><br> 
+	　　　　{<br> 
+	　　　　　　<span style='color:#3F7F5F;'>// 发送rest消息，调用查询帐号接口</span><br> 
+	　　　　　　String responsePayload =<br>
+	　　　　　　　　RestUtils.getInstance().sendMessage(restRequestMessage, PropertiesUtils.getValue(<span style="color:#0000C0;">"account.path"</span>));<br><br>
+	　　　　　　<span style='color:#7F0055;font-weight:bold;'>if</span> (!StringUtils.isEmpty(responsePayload))<br>
+	　　　　　　{<br>
+	　　　　　　　　<span style='color:#3F7F5F;'>// 返回401为鉴权失败，检查rest_config.properties中的用户密码是否配置正确</span><br> 
+	　　　　　　　　<span style='color:#7F0055;font-weight:bold;'>if</span> (<span style="color:#0000C0;">"401"</span>.equals(responsePayload))<br>
+	　　　　　　　　{<br>
+	　　　　　　　　　　result.setResultCode(401L);<br> 
+	　　　　　　　　}<br>
+	　　　　　　　　<span style='color:#7F0055;font-weight:bold;'>else</span><br> 
+	　　　　　　　　{<br>
+	　　　　　　　　　　<span style='color:#3F7F5F;'>// 把JSON结果转换成JavaBean</span><br> 
+	　　　　　　　　　　result = <span style="color:#0000C0;font-style:italic;">GSON</span>.fromJson(responsePayload, RestResponse.<span style='color:#7F0055;font-weight:bold;'>class</span>);<br> 
+	　　　　　　　　}<br>
+	　　　　　　}<br>
+	　　　　　　<span style='color:#7F0055;font-weight:bold;'>else</span><br>
+	　　　　　　{<br> 
+	　　　　　　　　<span style='color:#3F7F5F;'>// 消息为空,可能是网络存在问题，需要定义个错误码，1默认为操作失败</span><br> 
+	　　　　　　　　result.setResultCode(1L);<br> 
+	　　　　　　}<br>
+	　　　　}<br>
+	　　　　<span style='color:#7F0055;font-weight:bold;'>catch</span> (IOException e)<br> 
+	　　　　{<br> 
+	　　　　　　<span style="color:#0000C0;font-style:italic;">LOGGER</span>.error(<span style="color:#0000C0;">"query account error"</span> + e);<br>
+	　　　　}<br>
+	　　　　<span style='color:#7F0055;font-weight:bold;'>catch</span> (Exception e)<br>  
+	　　　　{<br> 
+	　　　　　　<span style="color:#0000C0;font-style:italic;">LOGGER</span>.error(<span style="color:#0000C0;">"query account error"</span> + e);<br>
+	　　　　}<br>
+	　　　　<br> 
+	　　　　<span style='color:#3F7F5F;'>// 输出流</span><br> 
+	　　　　PrintWriter pw = response.getWriter();<br> 
+	　　　　pw.print(<span style="color:#0000C0;font-style:italic;">GSON</span>.toJson(result));<br> 
+	　　　　pw.close();<br> 
+	　　}<br> 
+	}
+</div>

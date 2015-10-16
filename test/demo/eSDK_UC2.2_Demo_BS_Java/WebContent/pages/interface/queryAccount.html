@@ -1,0 +1,180 @@
+<ul class="block">
+	<li>
+		<div id="queryAccount_desc" class="description_div">
+			<!-- append description -->
+		</div>
+	</li>
+</ul>
+<ul>
+	<li>
+		<div id="queryAccount_execution">
+			<!-- append execution code -->
+		</div>
+	</li>
+</ul>
+<ul>
+	<li>
+		<div id="queryAccount_src" class="sourcecode_div">
+			<!-- append source code -->
+		</div>
+	</li>
+</ul>
+
+<script type="text/javascript">
+	$(document).ready(function(){
+		$.ajax({
+			type : "get",
+			cache : false,
+			url : "/eSDK_UC2.2_Demo_BS_Java/pages/description/queryAccount_desc.html",
+			async : false,
+			success : function(data) {
+				$("#queryAccount_desc").html(data);
+			}
+		});
+		
+		$.ajax({
+			type : "get",
+			cache : false,
+			url : "/eSDK_UC2.2_Demo_BS_Java/pages/execution/queryAccount_execution.html",
+			async : false,
+			success : function(data) {
+				$("#queryAccount_execution").html(data);
+			}
+		});
+		
+		$.ajax({
+			type : "get",
+			cache : false,
+			url : "/eSDK_UC2.2_Demo_BS_Java/pages/sourcecode/queryAccount_src.html",
+			async : false,
+			success : function(data) {
+				$("#queryAccount_src").html(data);
+			}
+		});
+		
+		$("#queryAccount").click(function(){
+			$("#userIdErrTip").html("");
+			$("#exactSearchErrTip").html("");
+			$("#conditionErrTip").html("");
+			$("#pageCountErrTip").html("");
+			$("#pageNumErrTip").html("");			
+
+			$("#queryAccount_status").html("");
+			
+			$("#userIdErrTip").removeAttr("languageTag");
+			$("#exactSearchErrTip").removeAttr("languageTag");
+			$("#conditionErrTip").removeAttr("languageTag");
+			$("#pageCountErrTip").removeAttr("languageTag");
+			$("#pageNumErrTip").removeAttr("languageTag");
+			
+			$("#queryAccount_status").removeAttr("languageTag");
+			
+			$("#userIdErrTip").removeClass("input_error");
+			$("#exactSearchErrTip").removeClass("input_error");
+			$("#conditionErrTip").removeClass("input_error");
+			$("#pageCountErrTip").removeClass("input_error");
+			$("#pageNumErrTip").removeClass("input_error");					
+			
+			var userId = $("#userId").val();
+			var exactSearch = $("#exactSearch").val();
+			var condition = $("#condition").val();
+			var pageCount = $("#pageCount").val();
+			var pageNum = $("#pageNum").val();			
+			
+			if (isEmpty(userId))
+			{
+				$("#userIdErrTip").attr("languageTag", "userId1Null");
+				$("#userIdErrTip").html(controller.language.titles["userId1Null"]);
+				$("#userId").focus();
+				$("#userId").addClass("input_error");
+				return false;
+			}
+			
+			if (isEmpty(exactSearch))
+			{
+				$("#exactSearchErrTip").attr("languageTag", "exactSearchNull");
+				$("#exactSearchErrTip").html(controller.language.titles["exactSearchNull"]);
+				$("#exactSearch").focus();
+				$("#exactSearch").addClass("input_error");
+				return false;
+			}
+			
+			if (isEmpty(condition))
+			{
+				$("#conditionErrTip").attr("languageTag", "conditionNull");
+				$("#conditionErrTip").html(controller.language.titles["conditionNull"]);
+				$("#condition").focus();
+				$("#condition").addClass("input_error");
+				return false;
+			}
+			
+			if (isEmpty(pageCount))
+			{
+				$("#pageCountErrTip").attr("languageTag", "pageCountNull");
+				$("#pageCountErrTip").html(controller.language.titles["pageCountNull"]);
+				$("#pageCount").focus();
+				$("#pageCount").addClass("input_error");
+				return false;
+			}
+			
+			if (isEmpty(pageNum))
+			{
+				$("#pageNumErrTip").attr("languageTag", "pageNumNull");
+				$("#pageNumErrTip").html(controller.language.titles["pageNumNull"]);
+				$("#pageNum").focus();
+				$("#pageNum").addClass("input_error");
+				return false;
+			}
+			
+			$.ajax({
+				url : "/eSDK_UC2.2_Demo_BS_Java/queryAccountServlet",
+				type : "get",
+				dataType : "json",
+				data : "userId=" + userId + "&exactSearch=" + exactSearch + "&condition=" + condition + 
+				"&pageCount=" + pageCount + "&pageNum=" + pageNum,
+				async : false,
+				success : function(data)
+				{
+					if (data.resultCode == 401)
+					{
+						$("#queryAccount_resultCode").val(data.resultCode);
+						$("#queryAccount_status").attr("languageTag", "userAuthFailed");
+						$("#queryeAccount_status").html(controller.language.titles["userAuthFailed"]);
+					}
+					else
+					{
+						
+						$("#queryAccount_resultCode").val(data.resultCode);
+						$("#queryAccount_resultContext").val(data.resultContext);						
+						$("#queryAccount_result").val(JSON.stringify(data.result))	
+						
+						if (0 == data.resultCode)
+						{
+							$("#queryAccount_status").attr("languageTag", "operationSuccess");
+							$("#queryAccount_status").html(controller.language.titles["operationSuccess"]);
+						}
+						else
+						{
+							$("#queryAccount_status").attr("languageTag", "operationFailed");
+							$("#queryAccount_status").html(controller.language.titles["operationFailed"]);
+						}
+					}
+					
+				},
+				error : function(data)
+				{
+					var res = data.responseText;
+					$("#queryAccount_resultCode").val(res);
+					$("#queryAccount_resultContext").val("");
+					$("#queryAccount_status").attr("languageTag", "operationFailed");
+					$("#queryAccount_status").html(controller.language.titles["operationFailed"]);
+				},
+				beforeSend : function()
+				{
+					$("#queryAccount_resultCode").val("");
+					$("#queryAccount_resultContext").val("");
+				}
+			});
+		});
+	});
+</script>

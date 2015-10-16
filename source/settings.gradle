@@ -1,0 +1,3 @@
+include ":esdk_uc_base",":esdk_uc_domain"
+include ":esdk_uc_rest"
+include ":esdk_uc_neadp_interface",":esdk_uc_neadp_appserver_v200r002c00",":esdk_uc_neadp_bmu_v200r002c00"

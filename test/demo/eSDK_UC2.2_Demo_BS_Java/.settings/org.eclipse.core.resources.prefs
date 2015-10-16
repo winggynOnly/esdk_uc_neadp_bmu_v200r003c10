@@ -1,0 +1,13 @@
+eclipse.preferences.version=1
+encoding//WebContent/css/tree.css=UTF-8
+encoding//WebContent/pages/description/addAccount_desc.html=UTF-8
+encoding//WebContent/pages/description/createctd_desc.html=UTF-8
+encoding//WebContent/pages/execution/addAccount_execution.html=UTF-8
+encoding//WebContent/pages/interface/addAccount.html=UTF-8
+encoding//WebContent/pages/interface/createctd.html=UTF-8
+encoding//WebContent/pages/interface/queryAccount.html=UTF-8
+encoding//WebContent/pages/sourcecode/addAccount_src.html=UTF-8
+encoding//WebContent/pages/sourcecode/createctd_src.html=UTF-8
+encoding//WebContent/pages/sourcecode/queryAccount_src.html=UTF-8
+encoding//src/com/huawei/esdk/uc/demo/servlet/CTDServlet.java=UTF-8
+encoding/<project>=UTF-8

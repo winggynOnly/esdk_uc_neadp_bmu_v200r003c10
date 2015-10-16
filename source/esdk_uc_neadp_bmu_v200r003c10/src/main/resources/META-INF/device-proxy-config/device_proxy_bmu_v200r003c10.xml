@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<proxys>
+	<deviceProxy>
+		<className>com.huawei.esdk.uc.device.UC23V2R3C10BMUDevice</className>
+		<deviceType>BMUV2R3C10</deviceType>
+		<startVersion>V200R003C10</startVersion>
+		<endVersion></endVersion>
+	</deviceProxy>
+</proxys>

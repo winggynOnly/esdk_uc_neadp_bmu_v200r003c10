@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd" id="WebApp_ID" version="3.0">
+  <display-name>eSDK_UC2.2_Demo_BS_Java</display-name>
+  <welcome-file-list>
+    <welcome-file>pages/index.html</welcome-file>
+  </welcome-file-list>
+  <servlet>
+    <servlet-name>ctdServlet</servlet-name>
+    <servlet-class>com.huawei.esdk.uc.demo.servlet.CTDServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>ctdServlet</servlet-name>
+    <url-pattern>/ctdServlet</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <servlet-name>addAccountServlet</servlet-name>
+    <servlet-class>com.huawei.esdk.uc.demo.servlet.AddAccountServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>addAccountServlet</servlet-name>
+    <url-pattern>/addAccountServlet</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <servlet-name>queryAccountServlet</servlet-name>
+    <servlet-class>com.huawei.esdk.uc.demo.servlet.QueryAccountServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>queryAccountServlet</servlet-name>
+    <url-pattern>/queryAccountServlet</url-pattern>
+  </servlet-mapping>
+</web-app>
